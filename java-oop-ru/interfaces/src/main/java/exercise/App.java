@@ -8,9 +8,8 @@ public class App {
         List<Home> sortedList = new ArrayList<>(apartments);
         List<String> newList;
         sortedList.sort(Home::compareTo);
-
         newList = sortedList.stream()
-                .map(Object::toString)
+                .map(Home::toString)
                 .limit(outputAmount)
                 .toList();
 
