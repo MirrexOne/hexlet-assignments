@@ -31,8 +31,7 @@ class InMemoryKVTest {
         Map<String, String> initial = new HashMap<>();
         initial.put("key", "10");
 
-        Map<String, String> clonedInitial = new HashMap<>();
-        clonedInitial.putAll(initial);
+        Map<String, String> clonedInitial = new HashMap<>(initial);
 
         KeyValueStorage storage = new InMemoryKV(initial);
 
