@@ -21,20 +21,25 @@ public final class App {
         });
 
         // BEGIN
+        app.get("/users/{id}", ctx -> {
+            var id = ctx.pathParamAsClass("id", Long.class).get();
+            User user = USERS.stream()
+                    .filter(u -> id.equals(u.getId()))
+                    .findFirst()
+                    .orElse(null);
+
+            if (user == null) {
+                throw new NotFoundResponse("User not found");
+            }
+
+            var page = new UserPage(user);
+            ctx.render("users/show.jte", model("page", page));
+        });
+
         app.get("/users", ctx -> {
             var page = new UsersPage(USERS);
             ctx.render("users/index.jte", model("page", page));
 
-        });
-
-        app.get("/users/{id}", context -> {
-            Long id = context.pathParamAsClass("id", Long.class).get();
-            User page = USERS.stream()
-                    .filter(u -> u.getId() == id)
-                    .findFirst()
-                    .orElseThrow(() -> new NotFoundResponse("User not found"));
-
-            context.render("users/show.jte", model("page", page));
         });
         // END
 
