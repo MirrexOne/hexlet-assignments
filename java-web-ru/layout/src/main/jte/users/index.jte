@@ -16,5 +16,8 @@ content = @`
             </tr>
         @endfor
     </table>
+`,
+footer = @`
+    <p>That's all users ...? Quite enough</p>
 `
 )

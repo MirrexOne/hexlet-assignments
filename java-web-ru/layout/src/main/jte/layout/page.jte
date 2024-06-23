@@ -1,6 +1,7 @@
 @import gg.jte.Content
 
 @param Content content
+@param Content footer = null
 
 
 <!DOCTYPE html>
@@ -24,9 +25,14 @@
         ${content}
     </div>
 </main>
-<footer>
-    <a href="https://github.com/MirrexOne">Github profile</a>
-</footer>
+@if (footer != null)
+    <footer class="text-center text-lg-start bg-light text-muted">
+        <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+            ${footer}
+            <a href="https://github.com/MirrexOne">Github profile</a>
+        </div>
+    </footer>
+@endif
 </body>
 </html>
 
