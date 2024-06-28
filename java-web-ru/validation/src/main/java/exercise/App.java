@@ -1,7 +1,6 @@
 package exercise;
 
 import io.javalin.Javalin;
-import io.javalin.http.UnprocessableContentResponse;
 import io.javalin.validation.ValidationException;
 import java.util.List;
 import exercise.model.Article;
@@ -36,9 +35,8 @@ public final class App {
         // BEGIN
         app.post("/articles", context -> {
             try {
-
                 String content = context.formParamAsClass("content", String.class)
-                        .check(c -> c.length() >= 10,"Article's content should be no shorter than 10 symbols")
+                        .check(c -> c.length() >= 10, "Article's content should be no shorter than 10 symbols")
                         .get().trim();
 
                 String title = context.formParamAsClass("title", String.class)
