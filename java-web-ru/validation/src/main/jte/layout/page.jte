@@ -1,7 +1,7 @@
 @import gg.jte.Content
 @param Content content
 
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

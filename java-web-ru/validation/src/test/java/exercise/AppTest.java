@@ -89,7 +89,7 @@ class AppTest {
         String body = responsePost.getBody();
         assertThat(body).contains("testTitle");
         assertThat(body).contains("testBody");
-        assertThat(body).contains("Статья должна быть не короче 10 символов");
+        assertThat(body).contains("The article should be no shorter than 10 characters");
 
         // var article = ArticleRepository.findByTitle("test title");
         // assertNull(article);
@@ -108,7 +108,7 @@ class AppTest {
         String body = responsePost.getBody();
         assertThat(body).contains("q");
         assertThat(body).contains("test content");
-        assertThat(body).contains("Название не должно быть короче двух символов");
+        assertThat(body).contains("The name should not be shorter than two characters");
 
         // var article = ArticleRepository.findByTitle("q");
         // assertNull(article);
@@ -135,7 +135,7 @@ class AppTest {
         String body = response2.getBody();
         assertThat(body).contains("test article");
         assertThat(body).contains("test content 2");
-        assertThat(body).contains("Статья с таким названием уже существует");
+        assertThat(body).contains("An article with that title already exists");
 
         List<Article> articles = ArticleRepository.search("test article");
         assertThat(articles.size()).isEqualTo(1);
