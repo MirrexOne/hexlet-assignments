@@ -6,7 +6,6 @@
         @for(var validator : articles.getErrors().values())
             @for(var error : validator)
                 <li>${error.getMessage()}</li>
-                <li>${error.getMessage()}</li>
             @endfor
         @endfor
     </ul>

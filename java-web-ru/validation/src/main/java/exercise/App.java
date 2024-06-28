@@ -40,13 +40,13 @@ public final class App {
                         .get().trim();
 
                 String title = context.formParamAsClass("title", String.class)
-                        .check(ArticleRepository::existsByTitle, "Article with that title already exists")
+//                        .check(ArticleRepository::existsByTitle, "Article with that title already exists")
                         .check(name -> name.length() >= 2, "Title shouldn't be shorter than 2 symbols")
                         .get();
 
+                context.redirect("/articles", HttpStatus.forStatus(422));
                 var article = new Article(title, content);
                 ArticleRepository.save(article);
-                context.redirect("/articles", HttpStatus.forStatus(422));
             } catch (ValidationException exception) {
                 String title = context.formParam("title");
                 String content = context.formParam("content");
