@@ -1,7 +1,6 @@
 @import exercise.dto.posts.PostsPage
 @import exercise.util.NamedRoutes
 @param PostsPage posts
-@param int currentPage
 
 @template.layout.page(
 content = @`
@@ -35,17 +34,14 @@ content = @`
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
                 <li class="page-item">
-                    <a class="page-link" href="${"/posts?page=" + (currentPage - 1)}" aria-label="Previous">
+                    <a class="page-link" href="?page=${posts.getPage() < 2 ? 1 : posts.getPage() - 1}" aria-label="Previous">
                         <span aria-hidden="true">&laquo; Back</span>
                     </a>
                 </li>
-                @for(var i = 1; i <= posts.getPosts().size(); i++)
-                    <li class="page-item @if(i == currentPage) active @endif">
-                        <a class="page-link" href="${"/posts?page=" + (i)}">${i}</a>
-                    </li>
-                @endfor
                 <li class="page-item">
-                    <a class="page-link" href="${"/posts?page=" + (currentPage + 1)}" aria-label="Next">
+                    <a class="page-link" href="${NamedRoutes.postsPath()}?page=${posts.getPage()}">${posts.getPage()}</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="?page=${posts.getPage() + 1}" aria-label="Next">
                         <span aria-hidden="true">Next &raquo;</span>
                     </a>
                 </li>

@@ -14,15 +14,19 @@ public class PostsController {
     // BEGIN
     public static void index(Context context) {
         var page = context.queryParamAsClass("page", Integer.class).getOrDefault(1);
-        var posts = PostRepository.findAll(page, 5);
-        var post = new PostsPage(posts);
-        context.render("posts/index.jte", model("posts", post, "currentPage", page));
+        var pageSize = 5;
+
+        var amountOfPosts = PostRepository.findAll(page, pageSize);
+
+        var postsPage = new PostsPage(amountOfPosts, page);
+        context.render("posts/index.jte", model("posts", postsPage));
     }
 
     public static void show(Context context) {
         var id = context.pathParamAsClass("id", Long.class).get();
         var post = PostRepository.find(id)
                 .orElseThrow(() -> new NotFoundResponse("Page not found"));
+
         var postPage = new PostPage(post);
         context.render("posts/show.jte", model("post", postPage));
     }
