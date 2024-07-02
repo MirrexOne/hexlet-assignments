@@ -63,10 +63,9 @@ public class PostsController {
         var post = PostRepository.find(id)
                 .orElseThrow(() -> new NotFoundResponse("Post not found or deleted"));
 
-        String title = post.getName();
-        String body = post.getBody();
-        var editingPost = new EditPostPage(title, body, null);
-        context.render("posts/edit.jte", model("post", editingPost));
+        var editingPost = new PostPage(post);
+        var editPostPage = new EditPostPage();
+        context.render("posts/edit.jte", model("post", editPostPage, "page", editingPost));
     }
 
     public static void update(Context context) {
@@ -82,11 +81,10 @@ public class PostsController {
             var post = PostRepository.find(id)
                     .orElseThrow(() -> new NotFoundResponse("Post not found or deleted"));
 
-            post.setId(id);
             post.setName(title);
             post.setBody(body);
 
-            context.redirect(NamedRoutes.postPath(id));
+            context.redirect(NamedRoutes.postsPath());
         } catch (ValidationException exception) {
             var title = context.formParam("title");
             var body = context.formParam("body");
