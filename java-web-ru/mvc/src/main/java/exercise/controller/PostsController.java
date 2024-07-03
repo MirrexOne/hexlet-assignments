@@ -62,17 +62,16 @@ public class PostsController {
         var id = context.pathParamAsClass("id", Long.class).get();
         var post = PostRepository.find(id)
                 .orElseThrow(() -> new NotFoundResponse("Post not found or deleted"));
-        Long id1 = post.getId();
         String name = post.getName();
         String body = post.getBody();
 
-        var editPostPage = new EditPostPage(id1, name, body, null);
+        var editPostPage = new EditPostPage(id, name, body, null);
         context.render("posts/edit.jte", model("post", editPostPage));
     }
 
     public static void update(Context context) {
-        try {
             var id = context.pathParamAsClass("id", Long.class).get();
+        try {
             var title = context.formParamAsClass("name", String.class)
                     .check(value -> value.length() >= 2, "The name should not be shorter than two characters")
                     .get();
@@ -83,13 +82,12 @@ public class PostsController {
             var post = PostRepository.find(id)
                     .orElseThrow(() -> new NotFoundResponse("Post not found or deleted"));
 
-            post.setId(id);
             post.setName(title);
             post.setBody(body);
+            PostRepository.save(post);
 
             context.redirect(NamedRoutes.postsPath());
         } catch (ValidationException exception) {
-            var id = context.pathParamAsClass("id", Long.class).get();
             var title = context.formParam("name");
             var body = context.formParam("body");
             var post = new EditPostPage(id,title, body, exception.getErrors());
