@@ -26,9 +26,9 @@ public class UsersController {
         String lastName = context.formParam("lastName");
         String email = context.formParam("email");
         String password = context.formParam("password");
-        var cookieToken = context.cookie("token", token);
 
-        var user = new User(firstName, lastName, email, password, String.valueOf(cookieToken));
+        var user = new User(firstName, lastName, email, password, token);
+        context.cookie("token", token);
         UserRepository.save(user);
 
         context.redirect(NamedRoutes.userPath(user.getId()));
@@ -44,7 +44,7 @@ public class UsersController {
         String userToken = user.getToken();
 
         if (!StringUtils.equals(tokenCookie, userToken)) {
-            context.redirect(NamedRoutes.usersPath());
+            context.redirect(NamedRoutes.buildUserPath());
         } else {
             var userPage = new UserPage(user);
             context.render("users/show.jte", model("page", userPage));

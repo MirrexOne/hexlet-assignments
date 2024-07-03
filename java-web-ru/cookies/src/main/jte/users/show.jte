@@ -13,6 +13,9 @@
             <div class="mb-3">
                 Email: ${page.getUser().getEmail()}
             </div>
+            <div>
+                Token: ${page.getUser().getToken()}
+            </div>
         </div>
     `
 )
