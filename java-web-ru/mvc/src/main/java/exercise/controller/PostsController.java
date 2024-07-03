@@ -62,10 +62,12 @@ public class PostsController {
         var id = context.pathParamAsClass("id", Long.class).get();
         var post = PostRepository.find(id)
                 .orElseThrow(() -> new NotFoundResponse("Post not found or deleted"));
+        Long id1 = post.getId();
+        String name = post.getName();
+        String body = post.getBody();
 
-        var editingPost = new PostPage(post);
-        var editPostPage = new EditPostPage();
-        context.render("posts/edit.jte", model("post", editPostPage, "page", editingPost));
+        var editPostPage = new EditPostPage(id1, name, body, null);
+        context.render("posts/edit.jte", model("post", editPostPage));
     }
 
     public static void update(Context context) {
@@ -84,11 +86,12 @@ public class PostsController {
             post.setName(title);
             post.setBody(body);
 
-            context.redirect(NamedRoutes.postsPath());
+            context.redirect(NamedRoutes.postPath(id));
         } catch (ValidationException exception) {
+            var id = context.pathParamAsClass("id", Long.class).get();
             var title = context.formParam("title");
             var body = context.formParam("body");
-            var post = new EditPostPage(title, body, exception.getErrors());
+            var post = new EditPostPage(id,title, body, exception.getErrors());
             context.render("posts/edit.jte", model("post", post)).status(422);
         }
     }
