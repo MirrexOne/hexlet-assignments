@@ -6,6 +6,7 @@ import exercise.dto.LoginPage;
 import exercise.model.User;
 import exercise.repository.UsersRepository;
 
+import exercise.util.NamedRoutes;
 import exercise.util.Security;
 import io.javalin.http.Context;
 
@@ -13,6 +14,11 @@ import io.javalin.http.Context;
 public class SessionsController {
 
     // BEGIN
+    public static void buildUserPage(Context context) {
+        var page = new LoginPage(null, null);
+        context.render("build.jte", model("login", page));
+    }
+
     public static void createUser(Context context) {
 
         String name = context.formParamAsClass("name", String.class).get();
@@ -21,23 +27,26 @@ public class SessionsController {
 
         var user = UsersRepository.findByName(name);
 
-        if (!user.getPassword().equals(encryptedPassword) || !user.getName().equals(name)) {
-            var loginPage = new LoginPage(user.getName(), "Wrong username or password");
+        if (user == null || user.getPassword().equals(encryptedPassword)) {
+            var loginPage = new LoginPage(name, "Wrong username or password");
             context.render("build.jte", model("login", loginPage));
             return;
         }
 
         context.sessionAttribute("currentUser", name);
+        context.redirect(NamedRoutes.loginPath());
 
+    }
+
+    public static void index(Context context) {
+        Object currentUser = context.sessionAttribute("currentUser");
+        var mainPage = new MainPage(currentUser);
+        context.render("index.jte", model("page", mainPage));
     }
 
     public static void destroySession(Context context) {
         context.sessionAttribute("currentUser", null);
-        context.redirect("");
-    }
-
-    public static void buildUserPage(Context context) {
-        context.render("build.jte");
+        context.redirect(NamedRoutes.logoutPath());
     }
     // END
 }
