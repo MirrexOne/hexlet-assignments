@@ -13,8 +13,8 @@ public class SessionsController {
 
     // BEGIN
     public static void index(Context context) {
-        Object userAttribute = context.sessionAttribute("user");
-        var mainPage = new MainPage(String.valueOf(userAttribute));
+        var userAttribute = context.sessionAttribute("user");
+        var mainPage = new MainPage(userAttribute);
         context.render("index.jte", model("page", mainPage));
     }
 
@@ -25,7 +25,7 @@ public class SessionsController {
 
     public static void destroy(Context context) {
         context.sessionAttribute("user", null);
-        context.redirect("/sessions");
+        context.redirect("/");
     }
 
     public static void create(Context context) {
@@ -37,7 +37,7 @@ public class SessionsController {
 
         if (user != null && encryptedPassword.equals(user.getPassword())) {
             context.sessionAttribute("user", name);
-            context.redirect("/sessions");
+            context.redirect("/");
         } else {
             String error = "Wrong username or password";
             var loginPage = new LoginPage(name, error);

@@ -11,7 +11,7 @@ content = @`
         <div class="row justify-content-center">
             <div class="col-md-4">
                 <h2 class="text-center">Login</h2>
-                <form action="${NamedRoutes.loginPath()}" method="post">
+                <form action="${NamedRoutes.rootPath()}" method="post">
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name">
