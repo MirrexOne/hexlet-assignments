@@ -11,7 +11,7 @@ import kong.unirest.Unirest;
 import io.javalin.Javalin;
 import exercise.repository.PostRepository;
 import exercise.model.Post;
-    
+
 class AppTest {
 
     private static Javalin app;

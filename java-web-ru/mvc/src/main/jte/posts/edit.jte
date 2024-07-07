@@ -1,4 +1,5 @@
 @import exercise.dto.posts.EditPostPage
+@import exercise.repository.PostRepository
 @param EditPostPage post
 
 @template.layout.page(
@@ -16,11 +17,11 @@ content = @`
     @endif
     <h2>Editing post</h2>
     <div class="mx-auto p-4 py-md-5">
-        <form action="/posts/${post.getId()}" method="post">
+        <form action="/posts/${PostRepository.findByName(post.getTitle()).get().getId()}" method="post">
             <div class="mb-3">
                 <label class="form-label">
                     Title
-                    <input type="text" class="form-control" name="name" value="${post.getTitle()}" />
+                    <input type="text" class="form-control" name="title" value="${post.getTitle()}" />
                 </label>
             </div>
             <div class="mb-3">

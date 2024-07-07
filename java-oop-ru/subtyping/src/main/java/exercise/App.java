@@ -1,13 +1,25 @@
 package exercise;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class App {
     public static void swapKeyValue(KeyValueStorage storage) {
         Map<String, String> copiedStorage = storage.toMap();
-        Set<Map.Entry<String, String >> storageDataSet = copiedStorage.entrySet();
-        storageDataSet.forEach(key -> storage.unset(key.getKey()));
-        storageDataSet.forEach(value -> storage.set(value.getValue(), value.getKey()));
+
+        for (Entry<String, String> entry : copiedStorage.entrySet()) {
+            String newValue = entry.getKey();
+            String newKey = entry.getValue();
+            storage.unset(entry.getKey());
+            storage.set(newKey, newValue);
+        }
+
+//        storage.toMap()
+//                .entrySet()
+//                .stream()
+//                .collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
+
     }
 }

@@ -62,17 +62,17 @@ public class PostsController {
         var id = context.pathParamAsClass("id", Long.class).get();
         var post = PostRepository.find(id)
                 .orElseThrow(() -> new NotFoundResponse("Post not found or deleted"));
-        String name = post.getName();
-        String body = post.getBody();
 
-        var editPostPage = new EditPostPage(id, name, body, null);
-        context.render("posts/edit.jte", model("post", editPostPage));
+        String title = post.getName();
+        String body = post.getBody();
+        var editingPost = new EditPostPage(title, body, null);
+        context.render("posts/edit.jte", model("post", editingPost));
     }
 
     public static void update(Context context) {
-            var id = context.pathParamAsClass("id", Long.class).get();
         try {
-            var title = context.formParamAsClass("name", String.class)
+            var id = context.pathParamAsClass("id", Long.class).get();
+            var title = context.formParamAsClass("title", String.class)
                     .check(value -> value.length() >= 2, "The name should not be shorter than two characters")
                     .get();
             var body = context.formParamAsClass("body", String.class)
@@ -82,15 +82,15 @@ public class PostsController {
             var post = PostRepository.find(id)
                     .orElseThrow(() -> new NotFoundResponse("Post not found or deleted"));
 
+            post.setId(id);
             post.setName(title);
             post.setBody(body);
-            PostRepository.save(post);
 
-            context.redirect(NamedRoutes.postsPath());
+            context.redirect(NamedRoutes.postPath(id));
         } catch (ValidationException exception) {
-            var title = context.formParam("name");
+            var title = context.formParam("title");
             var body = context.formParam("body");
-            var post = new EditPostPage(id,title, body, exception.getErrors());
+            var post = new EditPostPage(title, body, exception.getErrors());
             context.render("posts/edit.jte", model("post", post)).status(422);
         }
     }
