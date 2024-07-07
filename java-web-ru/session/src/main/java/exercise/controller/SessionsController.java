@@ -25,7 +25,8 @@ public class SessionsController {
 
     public static void destroy(Context context) {
         context.sessionAttribute("user", null);
-        context.redirect("/");
+        context.status(302);
+        context.redirect("/sessions");
     }
 
     public static void create(Context context) {
@@ -37,7 +38,8 @@ public class SessionsController {
 
         if (user != null && encryptedPassword.equals(user.getPassword())) {
             context.sessionAttribute("user", name);
-            context.redirect("/");
+            context.status(302);
+            context.redirect("/sessions");
         } else {
             String error = "Wrong username or password";
             var loginPage = new LoginPage(name, error);

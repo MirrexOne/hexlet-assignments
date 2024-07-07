@@ -9,7 +9,9 @@ content = @`
             <a href="${NamedRoutes.buildSessionPath()}">Log in</a>
         @else
             ${String.valueOf(page.getName())}
-            <a href="${NamedRoutes.logoutPath()}">Log out</a>
+            <form action="${NamedRoutes.logoutPath()}" method="post">
+                <button type="submit" class="btn btn-danger">Выйти</button>
+            </form>
         @endif
     </div>
 `
